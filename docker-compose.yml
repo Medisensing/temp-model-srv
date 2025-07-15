@@ -4,8 +4,8 @@ services:
   fastapi-app:
     image: ghcr.io/medisensing/resp-model-srv:latest         # ✅ 모델 이름에 맞춰 변경
     container_name: model-temp                               # ✅ 고유하게: model-{모델이름}
-    ports:
-      - "9000:9000"                                           # ⚠ 고정 포트 사용 시 병렬 실행 불가
+    expose:
+      - "9000"
     environment:
       - INTERNAL_SECRET=dev_secret
       - PYTHONUNBUFFERED=1
