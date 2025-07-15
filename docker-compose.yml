@@ -2,33 +2,16 @@ version: "3.8"
 
 services:
   fastapi-app:
-    image: ghcr.io/medisensing/temp-model-srv:latest   #변경필요: 예시(resp-model-srv)
-    container_name: model-template #변경 필요: model-{모델이름} 으로 구성
+    image: ghcr.io/medisensing/resp-model-srv:latest         # ✅ 모델 이름에 맞춰 변경
+    container_name: model-temp                               # ✅ 고유하게: model-{모델이름}
     ports:
-      - "9000:9000"          #9000번 고정
+      - "9000:9000"                                           # ⚠ 고정 포트 사용 시 병렬 실행 불가
     environment:
-      - INTERNAL_SECRET=dev_secret #내부 네트워크망 식별용
+      - INTERNAL_SECRET=dev_secret
       - PYTHONUNBUFFERED=1
     labels:
-      model: "temp"                                  # 변경필요: 게이트웨이용 식별라벨, 모델이름으로 변경
-      com.centurylinklabs.watchtower.enable: "true"  # 자동 업데이트 허용
-    networks: [models-net]
-    restart: unless-stopped
-
-  watchtower:
-    image: containrrr/watchtower # 변경금지
-    container_name: watchtower   # 변경금지
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /root/.docker/config.json:/config.json  # 인증 정보 마운트, 변경금지
-    environment:
-      - WATCHTOWER_LABEL_ENABLE=true
-      - WATCHTOWER_CLEANUP=true
-      - WATCHTOWER_POLL_INTERVAL=30
-      - WATCHTOWER_REGISTRY_AUTH=true
-      - WATCHTOWER_USERNAME=${WATCHTOWER_USERNAME}
-      - WATCHTOWER_PASSWORD=${WATCHTOWER_PASSWORD}
-      - LOG_LEVEL=debug
+      model: "temp"                                           # ✅ 게이트웨이에서 식별할 모델명
+      com.centurylinklabs.watchtower.enable: "true"          # ✅ Watchtower가 감지하도록 유지
     networks: [models-net]
     restart: unless-stopped
 
