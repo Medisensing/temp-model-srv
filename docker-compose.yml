@@ -12,7 +12,8 @@ services:
     labels:
       model: "temp"                                           # ✅ 게이트웨이에서 식별할 모델명
       com.centurylinklabs.watchtower.enable: "true"          # ✅ Watchtower가 감지하도록 유지
-    networks: [models-net]
+    networks:
+      - models-net
     restart: unless-stopped
 
 networks:
