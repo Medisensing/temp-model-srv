@@ -1,0 +1,3 @@
+fastapi
+uvicorn[standard]
+#필요에 따라 적절하게 추출
